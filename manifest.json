@@ -1,0 +1,19 @@
+{
+  "name": "Mes Séances",
+  "short_name": "Séances",
+  "description": "Affiche mes séances de musculation à la salle",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111318",
+  "theme_color": "#111318",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
