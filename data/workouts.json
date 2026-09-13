@@ -36,6 +36,12 @@
                 "exercice": "Élévations latérales",
                 "series_x_reps": "1 x 12-15 reps + 1 Drop Set",
                 "slug": "lateral-raise"
+            },
+            {
+                "ordre": "Cardio",
+                "exercice": "Corde à sauter",
+                "series_x_reps": "20 minutes",
+                "slug": "jump-rope"
             }
         ],
         "MERCREDI": [
@@ -86,6 +92,12 @@
                 "exercice": "Abdos (\"Deadbug\" ou Crunch)",
                 "series_x_reps": "1 x 12 à 15 reps (échec)",
                 "slug": "dead-bug"
+            },
+            {
+                "ordre": "Cardio",
+                "exercice": "Corde à sauter",
+                "series_x_reps": "20 minutes",
+                "slug": "jump-rope"
             }
         ],
         "VENDREDI": [
@@ -124,6 +136,12 @@
                 "exercice": "Élévations latérales",
                 "series_x_reps": "1 x 12-15 reps + 1 Drop Set",
                 "slug": "lateral-raise"
+            },
+            {
+                "ordre": "Cardio",
+                "exercice": "Corde à sauter",
+                "series_x_reps": "20 minutes",
+                "slug": "jump-rope"
             }
         ]
     },
@@ -176,6 +194,12 @@
                 "exercice": "Abdos (\"Deadbug\" ou Crunch)",
                 "series_x_reps": "1 x 12 à 15 reps (échec)",
                 "slug": "dead-bug"
+            },
+            {
+                "ordre": "Cardio",
+                "exercice": "Corde à sauter",
+                "series_x_reps": "20 minutes",
+                "slug": "jump-rope"
             }
         ],
         "MERCREDI": [
@@ -214,6 +238,12 @@
                 "exercice": "Élévations latérales",
                 "series_x_reps": "1 x 12-15 reps + 1 Drop Set",
                 "slug": "lateral-raise"
+            },
+            {
+                "ordre": "Cardio",
+                "exercice": "Corde à sauter",
+                "series_x_reps": "20 minutes",
+                "slug": "jump-rope"
             }
         ],
         "VENDREDI": [
@@ -264,6 +294,12 @@
                 "exercice": "Abdos (\"Deadbug\" ou Crunch)",
                 "series_x_reps": "1 x 12 à 15 reps (échec)",
                 "slug": "dead-bug"
+            },
+            {
+                "ordre": "Cardio",
+                "exercice": "Corde à sauter",
+                "series_x_reps": "20 minutes",
+                "slug": "jump-rope"
             }
         ]
     }
