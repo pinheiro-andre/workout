@@ -1,4 +1,4 @@
-const CACHE_NAME = 'seances-v1';
+const CACHE_NAME = 'seances-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -25,19 +25,34 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const fetchPromise = fetch(event.request)
-        .then((response) => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || fetchPromise;
+function cacheFirst(request) {
+  return caches.match(request).then((cached) => {
+    const fetchPromise = fetch(request)
+      .then((response) => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+        }
+        return response;
+      })
+      .catch(() => cached);
+    return cached || fetchPromise;
+  });
+}
+
+function networkFirst(request) {
+  return fetch(request)
+    .then((response) => {
+      if (response && response.status === 200) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+      }
+      return response;
     })
-  );
+    .catch(() => caches.match(request));
+}
+
+self.addEventListener('fetch', (event) => {
+  const isSameOrigin = new URL(event.request.url).origin === self.location.origin;
+  event.respondWith(isSameOrigin ? networkFirst(event.request) : cacheFirst(event.request));
 });
