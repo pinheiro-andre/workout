@@ -112,7 +112,7 @@ function renderDay() {
     const card = document.createElement('div');
     card.className = `exo-card ${isWarmup ? 'warmup' : ''} ${isChecked ? 'done' : ''}`;
     const img = ex.slug
-      ? `<img class="exo-img" src="${IMG_BASE}/${ex.slug}/frame-1.png" alt="" loading="lazy" onerror="this.remove()">`
+      ? `<img class="exo-img" src="${IMG_BASE}/${ex.slug}/frame-1.png" alt="" loading="lazy" data-slug="${ex.slug}" onerror="this.remove()">`
       : '';
     card.innerHTML = `
       ${img}
@@ -123,6 +123,9 @@ function renderDay() {
         <div class="exo-reps">${ex.series_x_reps}</div>
       </div>
     `;
+    const imgEl = card.querySelector('.exo-img');
+    if (imgEl) imgEl.onclick = () => playAnimation(ex.slug);
+
     card.querySelector('.checkbox').onclick = () => {
       const all = loadChecks();
       const dc = all[key] || {};
@@ -133,6 +136,24 @@ function renderDay() {
     };
     grid.appendChild(card);
   });
+}
+
+function playAnimation(slug) {
+  if (!slug) return;
+  const overlay = document.createElement('div');
+  overlay.className = 'anim-overlay';
+  overlay.innerHTML = `<img class="anim-img" src="${IMG_BASE}/${slug}/frame-1.png" alt="">`;
+  overlay.onclick = () => { clearInterval(timer); overlay.remove(); };
+  document.body.appendChild(overlay);
+  const img = overlay.querySelector('.anim-img');
+
+  const sequence = [1, 2, 3, 2, 1, 2, 3, 2, 1]; // 2 loops, lands back on frame 1
+  let i = 0;
+  const timer = setInterval(() => {
+    img.src = `${IMG_BASE}/${slug}/frame-${sequence[i]}.png`;
+    i++;
+    if (i >= sequence.length) clearInterval(timer);
+  }, 250);
 }
 
 backBtn.onclick = () => {

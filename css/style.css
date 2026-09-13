@@ -141,6 +141,27 @@ body {
   background: var(--surface-2);
   object-fit: contain;
   padding: 4px;
+  cursor: pointer;
+}
+
+.anim-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.anim-img {
+  width: min(70vw, 320px);
+  height: min(70vw, 320px);
+  object-fit: contain;
+  background: var(--surface-2);
+  border-radius: 20px;
+  padding: 16px;
 }
 
 .attribution {
