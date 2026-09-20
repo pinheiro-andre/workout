@@ -225,7 +225,7 @@ body {
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: var(--surface-2);
+  background: var(--hero-bg);
   object-fit: contain;
   padding: 6px;
   cursor: pointer;
@@ -246,7 +246,7 @@ body {
   width: min(70vw, 320px);
   height: min(70vw, 320px);
   object-fit: contain;
-  background: var(--surface);
+  background: var(--hero-bg);
   border-radius: 24px;
   padding: 16px;
 }
