@@ -6,7 +6,7 @@ const resetBtn = document.getElementById('resetBtn');
 const STORAGE_KEY = 'workout-checks-v2';
 const LOG_KEY = 'workout-log-v2';
 const NAV_KEY = 'workout-nav-v2';
-const IMG_BASE = 'https://cdn.jsdelivr.net/npm/@bryllim/workout-guide@1.0.0/assets';
+const IMG_BASE = 'https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@main';
 
 let data = null;
 let view = { screen: 'home', workoutId: null };
@@ -131,7 +131,7 @@ function renderWorkout() {
   const key = checkKey(view.workoutId);
   const dayChecks = checks[key] || {};
 
-  app.innerHTML = `<div class="section-label">${w.days.join(' & ')}</div><div class="grid" id="grid"></div><p class="attribution">Illustrations : Everkinetic / Bryl Lim, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></p>`;
+  app.innerHTML = `<div class="section-label">${w.days.join(' & ')}</div><div class="grid" id="grid"></div><p class="attribution">Illustrations : <a href="https://gymvisual.com/" target="_blank" rel="noopener">© Gym visual</a></p>`;
   const grid = document.getElementById('grid');
 
   const today = todayStr();
@@ -142,8 +142,8 @@ function renderWorkout() {
     const logged = findLogEntry(view.workoutId, today, i);
     const card = document.createElement('div');
     card.className = `exo-card ${isWarmup ? 'warmup' : ''} ${isChecked ? 'done' : ''}`;
-    const img = ex.slug
-      ? `<img class="exo-img" src="${IMG_BASE}/${ex.slug}/frame-1.png" alt="" loading="lazy" data-slug="${ex.slug}" onerror="this.remove()">`
+    const img = ex.image
+      ? `<img class="exo-img" src="${IMG_BASE}/${ex.image}" alt="" loading="lazy" onerror="this.remove()">`
       : '';
     const loggedLine = logged
       ? `<div class="exo-logged">Fait : ${logged.weight ?? '?'} kg × ${logged.reps ?? '?'}</div>`
@@ -159,7 +159,7 @@ function renderWorkout() {
       </div>
     `;
     const imgEl = card.querySelector('.exo-img');
-    if (imgEl) imgEl.onclick = () => playAnimation(ex.slug);
+    if (imgEl) imgEl.onclick = () => playAnimation(ex.gif);
 
     card.querySelector('.exo-body').onclick = () => openLogEditor(ex, i);
 
@@ -179,7 +179,7 @@ function renderWorkout() {
 function openLogEditor(ex, i) {
   const today = todayStr();
   const existing = findLogEntry(view.workoutId, today, i);
-  const last = lastLogForSlug(ex.slug);
+  const last = lastLogForSlug(ex.image);
   const prefWeight = existing ? existing.weight : (last ? last.weight : '');
   const prefReps = existing ? existing.reps : (last ? last.reps : '');
 
@@ -209,7 +209,7 @@ function openLogEditor(ex, i) {
     const reps = parseInt(overlay.querySelector('#logReps').value, 10) || null;
     upsertLog({
       workoutId: view.workoutId, date: today, i,
-      slug: ex.slug, exercice: ex.exercice,
+      slug: ex.image, exercice: ex.exercice,
       weight, reps, ts: Date.now()
     });
     const all = loadChecks();
@@ -344,22 +344,13 @@ function importData(evt) {
   reader.readAsText(file);
 }
 
-function playAnimation(slug) {
-  if (!slug) return;
+function playAnimation(gif) {
+  if (!gif) return;
   const overlay = document.createElement('div');
   overlay.className = 'anim-overlay';
-  overlay.innerHTML = `<img class="anim-img" src="${IMG_BASE}/${slug}/frame-1.png" alt="">`;
-  overlay.onclick = () => { clearInterval(timer); overlay.remove(); };
+  overlay.innerHTML = `<img class="anim-img" src="${IMG_BASE}/${gif}" alt="">`;
+  overlay.onclick = () => overlay.remove();
   document.body.appendChild(overlay);
-  const img = overlay.querySelector('.anim-img');
-
-  const sequence = [1, 2, 3, 2, 1, 2, 3, 2, 1]; // 2 loops, lands back on frame 1
-  let i = 0;
-  const timer = setInterval(() => {
-    img.src = `${IMG_BASE}/${slug}/frame-${sequence[i]}.png`;
-    i++;
-    if (i >= sequence.length) clearInterval(timer);
-  }, 250);
 }
 
 backBtn.onclick = () => {

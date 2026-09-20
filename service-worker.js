@@ -1,4 +1,4 @@
-const CACHE_NAME = 'seances-v6';
+const CACHE_NAME = 'seances-v7';
 const ASSETS = [
   './',
   './index.html',

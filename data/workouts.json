@@ -10,43 +10,50 @@
                 "ordre": "Échauffement",
                 "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
                 "series_x_reps": "3 à 5 minutes",
-                "slug": "jump-rope"
+                "image": "images/2612-e1e76I2.jpg",
+                "gif": "videos/2612-e1e76I2.gif"
             },
             {
                 "ordre": "1A",
                 "exercice": "Développé couché incliné (Haltères)",
                 "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "incline-dumbbell-press"
+                "image": "images/0314-ns0SIbU.jpg",
+                "gif": "videos/0314-ns0SIbU.gif"
             },
             {
                 "ordre": "1B",
                 "exercice": "Tirage poitrine ou Tractions",
                 "series_x_reps": "2 x 10 à 12 reps",
-                "slug": "lat-pulldown"
+                "image": "images/2330-LEprlgG.jpg",
+                "gif": "videos/2330-LEprlgG.gif"
             },
             {
                 "ordre": "2",
                 "exercice": "Goblet Squat ou Hack Squat",
                 "series_x_reps": "1 x 6-8 reps + 1 x 10-12 reps",
-                "slug": "goblet-squat"
+                "image": "images/1760-yn8yg1r.jpg",
+                "gif": "videos/1760-yn8yg1r.gif"
             },
             {
                 "ordre": "3",
                 "exercice": "Soulevé de terre roumain (Haltères)",
                 "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "dumbbell-romanian-deadlift"
+                "image": "images/1459-rR0LJzx.jpg",
+                "gif": "videos/1459-rR0LJzx.gif"
             },
             {
                 "ordre": "4",
                 "exercice": "Élévations latérales",
                 "series_x_reps": "1 x 12-15 reps + 1 Drop Set",
-                "slug": "lateral-raise"
+                "image": "images/0334-DsgkuIt.jpg",
+                "gif": "videos/0334-DsgkuIt.gif"
             },
             {
                 "ordre": "Cardio",
                 "exercice": "Corde à sauter",
                 "series_x_reps": "20 minutes",
-                "slug": "jump-rope"
+                "image": "images/2612-e1e76I2.jpg",
+                "gif": "videos/2612-e1e76I2.gif"
             }
         ]
     },
@@ -60,55 +67,64 @@
                 "ordre": "Échauffement",
                 "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
                 "series_x_reps": "3 à 5 minutes",
-                "slug": "jump-rope"
+                "image": "images/2612-e1e76I2.jpg",
+                "gif": "videos/2612-e1e76I2.gif"
             },
             {
                 "ordre": "1A",
                 "exercice": "Tirage horizontal",
                 "series_x_reps": "2 x 10 à 12 reps",
-                "slug": "seated-row"
+                "image": "images/0861-fUBheHs.jpg",
+                "gif": "videos/0861-fUBheHs.gif"
             },
             {
                 "ordre": "1B",
                 "exercice": "Développé couché à plat (Haltères)",
                 "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "dumbbell-bench-press"
+                "image": "images/0289-SpYC0Kp.jpg",
+                "gif": "videos/0289-SpYC0Kp.gif"
             },
             {
                 "ordre": "2",
                 "exercice": "Step-ups (sur banc) ou Fentes",
                 "series_x_reps": "1 x 8 à 10 reps (par jambe)",
-                "slug": "step-up"
+                "image": "images/0431-aXtJhlg.jpg",
+                "gif": "videos/0431-aXtJhlg.gif"
             },
             {
                 "ordre": "3",
                 "exercice": "Leg Curl Assis (Machine)",
                 "series_x_reps": "1 x 10 à 12 reps + 1 Drop Set",
-                "slug": "seated-leg-curl"
+                "image": "images/0599-Zg3XY7P.jpg",
+                "gif": "videos/0599-Zg3XY7P.gif"
             },
             {
                 "ordre": "4A",
                 "exercice": "Curl Biceps",
                 "series_x_reps": "1 x 12 à 15 reps",
-                "slug": "bicep-curl"
+                "image": "images/0294-NbVPDMW.jpg",
+                "gif": "videos/0294-NbVPDMW.gif"
             },
             {
                 "ordre": "4B",
                 "exercice": "Extension Triceps au-dessus de la tête",
                 "series_x_reps": "1 x 12 à 15 reps + 1 Drop Set",
-                "slug": "overhead-tricep-extension"
+                "image": "images/1738-5fKX7wi.jpg",
+                "gif": "videos/1738-5fKX7wi.gif"
             },
             {
                 "ordre": "5",
                 "exercice": "Abdos (\"Deadbug\" ou Crunch)",
                 "series_x_reps": "1 x 12 à 15 reps (échec)",
-                "slug": "dead-bug"
+                "image": "images/0276-iny3m5y.jpg",
+                "gif": "videos/0276-iny3m5y.gif"
             },
             {
                 "ordre": "Cardio",
                 "exercice": "Corde à sauter",
                 "series_x_reps": "20 minutes",
-                "slug": "jump-rope"
+                "image": "images/2612-e1e76I2.jpg",
+                "gif": "videos/2612-e1e76I2.gif"
             }
         ]
     }
