@@ -111,7 +111,7 @@ function renderHome() {
     btn.className = 'card-btn';
     btn.innerHTML = `
       ${w.label}<span class="sub">${w.days.join(' & ')} · ${total} exercices · ${done}/${total} faits</span>
-      <span class="chevron">›</span>
+      <span class="pill">${done === total ? 'Fait ✓' : 'Commencer'}</span>
       <div class="progress"><span style="width:${pct}%"></span></div>
     `;
     btn.onclick = () => { view = { screen: 'workout', workoutId }; saveNav(); render(); };
@@ -119,7 +119,7 @@ function renderHome() {
   });
   const statsBtn = document.createElement('button');
   statsBtn.className = 'card-btn stats-entry';
-  statsBtn.innerHTML = `📊 Statistiques<span class="sub">Séances, volume, sauvegarde</span><span class="chevron">›</span>`;
+  statsBtn.innerHTML = `📊 Statistiques<span class="sub">Séances, volume, sauvegarde</span><span class="pill">Voir</span>`;
   statsBtn.onclick = () => { view = { screen: 'stats', workoutId: null }; saveNav(); render(); };
   grid.appendChild(statsBtn);
 }
@@ -223,46 +223,78 @@ function openLogEditor(ex, i) {
   };
 }
 
-function renderStats() {
-  const now = new Date();
-  const weekStart = startOfWeek(now);
-  const weekEnd = endOfWeek(now);
-  const monthPrefix = now.toISOString().slice(0, 7);
-
-  const checks = loadChecks();
-  const log = loadLog();
-
-  const sessionsTarget = Object.values(data).reduce((sum, w) => sum + w.days.length, 0);
-
-  let sessionsWeek = 0, sessionsMonth = 0;
+function weekVolumeAndSessions(weekStart, weekEnd, checks, log) {
+  let sessions = 0, volume = 0;
   Object.entries(checks).forEach(([key, dc]) => {
-    const anyDone = Object.values(dc).some(Boolean);
-    if (!anyDone) return;
+    if (!Object.values(dc).some(Boolean)) return;
     const [, dateStr] = key.split('__');
     const d = parseDate(dateStr);
-    if (d >= weekStart && d <= weekEnd) sessionsWeek++;
+    if (d >= weekStart && d <= weekEnd) sessions++;
+  });
+  log.forEach(entry => {
+    const d = parseDate(entry.date);
+    if (d >= weekStart && d <= weekEnd) volume += (entry.weight || 0) * (entry.reps || 0);
+  });
+  return { sessions, volume };
+}
+
+function renderStats() {
+  const now = new Date();
+  const monthPrefix = now.toISOString().slice(0, 7);
+  const checks = loadChecks();
+  const log = loadLog();
+  const sessionsTarget = Object.values(data).reduce((sum, w) => sum + w.days.length, 0);
+
+  const weekStart = startOfWeek(now);
+  const weekEnd = endOfWeek(now);
+  const { sessions: sessionsWeek, volume: volumeWeek } = weekVolumeAndSessions(weekStart, weekEnd, checks, log);
+
+  let sessionsMonth = 0, volumeMonth = 0;
+  Object.entries(checks).forEach(([key, dc]) => {
+    if (!Object.values(dc).some(Boolean)) return;
+    const [, dateStr] = key.split('__');
     if (dateStr.startsWith(monthPrefix)) sessionsMonth++;
   });
-
-  let volumeWeek = 0, volumeMonth = 0;
   log.forEach(entry => {
-    const vol = (entry.weight || 0) * (entry.reps || 0);
-    const d = parseDate(entry.date);
-    if (d >= weekStart && d <= weekEnd) volumeWeek += vol;
-    if (entry.date.startsWith(monthPrefix)) volumeMonth += vol;
+    if (entry.date.startsWith(monthPrefix)) volumeMonth += (entry.weight || 0) * (entry.reps || 0);
   });
 
+  const weeks = [];
+  for (let w = 5; w >= 0; w--) {
+    const ref = new Date(now);
+    ref.setDate(ref.getDate() - w * 7);
+    const s = startOfWeek(ref);
+    const e = endOfWeek(ref);
+    const { volume } = weekVolumeAndSessions(s, e, checks, log);
+    weeks.push({ volume, label: `${s.getDate()}/${s.getMonth() + 1}`, current: w === 0 });
+  }
+  const maxVolume = Math.max(1, ...weeks.map(w => w.volume));
+
   app.innerHTML = `
-    <div class="section-label">Cette semaine</div>
-    <div class="stat-row">
-      <div class="stat-tile"><div class="stat-value">${sessionsWeek}/${sessionsTarget}</div><div class="stat-label">séances</div></div>
-      <div class="stat-tile"><div class="stat-value">${Math.round(volumeWeek)}</div><div class="stat-label">kg soulevés (volume)</div></div>
+    <div class="hero-tile">
+      <div class="hero-label">Volume cette semaine</div>
+      <div class="hero-value">${Math.round(volumeWeek)} kg</div>
+      <div class="hero-sub">${sessionsWeek}/${sessionsTarget} séances faites</div>
     </div>
+
+    <div class="chart-card">
+      <div class="section-label" style="margin:0 0 4px">Volume / semaine</div>
+      <div class="chart-bars">
+        ${weeks.map(w => `
+          <div class="chart-bar ${w.current ? 'current' : ''}">
+            <div class="bar-fill" style="height:${Math.round((w.volume / maxVolume) * 100)}%"></div>
+            <div class="bar-label">${w.label}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
     <div class="section-label">Ce mois-ci</div>
     <div class="stat-row">
       <div class="stat-tile"><div class="stat-value">${sessionsMonth}</div><div class="stat-label">séances</div></div>
       <div class="stat-tile"><div class="stat-value">${Math.round(volumeMonth)}</div><div class="stat-label">kg soulevés (volume)</div></div>
     </div>
+
     <div class="section-label">Sauvegarde</div>
     <div class="grid">
       <button class="card-btn" id="exportBtn">Exporter mes données<span class="sub">Télécharge un fichier JSON de secours</span></button>
