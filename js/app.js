@@ -3,13 +3,13 @@ const title = document.getElementById('title');
 const backBtn = document.getElementById('backBtn');
 const resetBtn = document.getElementById('resetBtn');
 
-const STORAGE_KEY = 'workout-checks-v1';
-const LOG_KEY = 'workout-log-v1';
-const NAV_KEY = 'workout-nav-v1';
+const STORAGE_KEY = 'workout-checks-v2';
+const LOG_KEY = 'workout-log-v2';
+const NAV_KEY = 'workout-nav-v2';
 const IMG_BASE = 'https://cdn.jsdelivr.net/npm/@bryllim/workout-guide@1.0.0/assets';
 
 let data = null;
-let view = { screen: 'weeks', week: null, day: null };
+let view = { screen: 'home', workoutId: null };
 
 function loadChecks() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
@@ -21,8 +21,8 @@ function saveChecks(checks) {
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
-function checkKey(week, day) {
-  return `${week}__${day}__${todayStr()}`;
+function checkKey(workoutId) {
+  return `${workoutId}__${todayStr()}`;
 }
 
 function loadLog() {
@@ -32,9 +32,9 @@ function loadLog() {
 function saveLog(entries) {
   localStorage.setItem(LOG_KEY, JSON.stringify(entries));
 }
-function findLogEntry(week, day, date, i) {
+function findLogEntry(workoutId, date, i) {
   const log = loadLog();
-  return log.find(e => e.week === week && e.day === day && e.date === date && e.i === i);
+  return log.find(e => e.workoutId === workoutId && e.date === date && e.i === i);
 }
 function lastLogForSlug(slug) {
   if (!slug) return null;
@@ -45,7 +45,7 @@ function lastLogForSlug(slug) {
 }
 function upsertLog(entry) {
   const log = loadLog();
-  const idx = log.findIndex(e => e.week === entry.week && e.day === entry.day && e.date === entry.date && e.i === entry.i);
+  const idx = log.findIndex(e => e.workoutId === entry.workoutId && e.date === entry.date && e.i === entry.i);
   if (idx >= 0) log[idx] = entry;
   else log.push(entry);
   saveLog(log);
@@ -77,88 +77,61 @@ function loadNav() {
   catch { return null; }
 }
 
-function weekLabel(key) {
-  return key.replace('Semaine_', 'Semaine ');
-}
-
-function dayProgress(week, day) {
-  const checks = loadChecks()[checkKey(week, day)] || {};
-  const total = data[week][day].length;
+function dayProgress(workoutId) {
+  const checks = loadChecks()[checkKey(workoutId)] || {};
+  const total = data[workoutId].exercises.length;
   const done = Object.values(checks).filter(Boolean).length;
   return { done, total };
 }
 
 function render() {
-  backBtn.hidden = view.screen === 'weeks';
-  resetBtn.hidden = view.screen !== 'day';
+  backBtn.hidden = view.screen === 'home';
+  resetBtn.hidden = view.screen !== 'workout';
 
-  if (view.screen === 'weeks') {
+  if (view.screen === 'home') {
     title.textContent = 'Mes Séances';
-    renderWeeks();
-  } else if (view.screen === 'days') {
-    title.textContent = weekLabel(view.week);
-    renderDays();
-  } else if (view.screen === 'day') {
-    title.textContent = view.day.charAt(0) + view.day.slice(1).toLowerCase();
-    renderDay();
+    renderHome();
+  } else if (view.screen === 'workout') {
+    title.textContent = data[view.workoutId].label;
+    renderWorkout();
   } else if (view.screen === 'stats') {
     title.textContent = 'Statistiques';
     renderStats();
   }
 }
 
-function renderWeeks() {
-  const weeks = Object.keys(data);
-  app.innerHTML = `<div class="section-label">Choisis ta semaine</div><div class="grid" id="grid"></div>`;
+function renderHome() {
+  app.innerHTML = `<div class="section-label">Choisis ta séance</div><div class="grid" id="grid"></div>`;
   const grid = document.getElementById('grid');
-  weeks.forEach(week => {
-    const days = Object.keys(data[week]);
+  Object.keys(data).forEach(workoutId => {
+    const w = data[workoutId];
+    const { done, total } = dayProgress(workoutId);
+    const pct = total ? Math.round((done / total) * 100) : 0;
     const btn = document.createElement('button');
     btn.className = 'card-btn';
-    btn.innerHTML = `${weekLabel(week)}<span class="sub">${days.length} séances</span><span class="chevron">›</span>`;
-    btn.onclick = () => { view = { screen: 'days', week, day: null }; saveNav(); render(); };
+    btn.innerHTML = `
+      ${w.label}<span class="sub">${w.days.join(' & ')} · ${total} exercices · ${done}/${total} faits</span>
+      <span class="chevron">›</span>
+      <div class="progress"><span style="width:${pct}%"></span></div>
+    `;
+    btn.onclick = () => { view = { screen: 'workout', workoutId }; saveNav(); render(); };
     grid.appendChild(btn);
   });
   const statsBtn = document.createElement('button');
   statsBtn.className = 'card-btn stats-entry';
   statsBtn.innerHTML = `📊 Statistiques<span class="sub">Séances, volume, sauvegarde</span><span class="chevron">›</span>`;
-  statsBtn.onclick = () => { view = { screen: 'stats', week: null, day: null }; saveNav(); render(); };
+  statsBtn.onclick = () => { view = { screen: 'stats', workoutId: null }; saveNav(); render(); };
   grid.appendChild(statsBtn);
 }
 
-function renderDays() {
-  const days = Object.keys(data[view.week]);
-  app.innerHTML = `<div class="section-label">${weekLabel(view.week)}</div><div class="grid" id="grid"></div>`;
-  const grid = document.getElementById('grid');
-  days.forEach(day => {
-    const { done, total } = dayProgress(view.week, day);
-    const pct = total ? Math.round((done / total) * 100) : 0;
-    const btn = document.createElement('button');
-    btn.className = 'card-btn';
-    const label = day.charAt(0) + day.slice(1).toLowerCase();
-    btn.innerHTML = `
-      <div class="row-flex">
-        <span class="day-badge">${label.slice(0, 3)}</span>
-        <div style="flex:1">
-          ${label}
-          <span class="sub">${data[view.week][day].length} exercices · ${done}/${total} faits</span>
-        </div>
-        <span class="chevron">›</span>
-      </div>
-      <div class="progress"><span style="width:${pct}%"></span></div>
-    `;
-    btn.onclick = () => { view = { screen: 'day', week: view.week, day }; saveNav(); render(); };
-    grid.appendChild(btn);
-  });
-}
-
-function renderDay() {
-  const exercises = data[view.week][view.day];
+function renderWorkout() {
+  const w = data[view.workoutId];
+  const exercises = w.exercises;
   const checks = loadChecks();
-  const key = checkKey(view.week, view.day);
+  const key = checkKey(view.workoutId);
   const dayChecks = checks[key] || {};
 
-  app.innerHTML = `<div class="section-label">${weekLabel(view.week)}</div><div class="grid" id="grid"></div><p class="attribution">Illustrations : Everkinetic / Bryl Lim, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></p>`;
+  app.innerHTML = `<div class="section-label">${w.days.join(' & ')}</div><div class="grid" id="grid"></div><p class="attribution">Illustrations : Everkinetic / Bryl Lim, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></p>`;
   const grid = document.getElementById('grid');
 
   const today = todayStr();
@@ -166,7 +139,7 @@ function renderDay() {
   exercises.forEach((ex, i) => {
     const isWarmup = ex.ordre.toLowerCase().includes('échauffement');
     const isChecked = !!dayChecks[i];
-    const logged = findLogEntry(view.week, view.day, today, i);
+    const logged = findLogEntry(view.workoutId, today, i);
     const card = document.createElement('div');
     card.className = `exo-card ${isWarmup ? 'warmup' : ''} ${isChecked ? 'done' : ''}`;
     const img = ex.slug
@@ -197,7 +170,7 @@ function renderDay() {
       dc[i] = !dc[i];
       all[key] = dc;
       saveChecks(all);
-      renderDay();
+      renderWorkout();
     };
     grid.appendChild(card);
   });
@@ -205,7 +178,7 @@ function renderDay() {
 
 function openLogEditor(ex, i) {
   const today = todayStr();
-  const existing = findLogEntry(view.week, view.day, today, i);
+  const existing = findLogEntry(view.workoutId, today, i);
   const last = lastLogForSlug(ex.slug);
   const prefWeight = existing ? existing.weight : (last ? last.weight : '');
   const prefReps = existing ? existing.reps : (last ? last.reps : '');
@@ -235,17 +208,18 @@ function openLogEditor(ex, i) {
     const weight = parseFloat(overlay.querySelector('#logWeight').value) || null;
     const reps = parseInt(overlay.querySelector('#logReps').value, 10) || null;
     upsertLog({
-      week: view.week, day: view.day, date: today, i,
+      workoutId: view.workoutId, date: today, i,
       slug: ex.slug, exercice: ex.exercice,
       weight, reps, ts: Date.now()
     });
     const all = loadChecks();
-    const dc = all[checkKey(view.week, view.day)] || {};
+    const key = checkKey(view.workoutId);
+    const dc = all[key] || {};
     dc[i] = true;
-    all[checkKey(view.week, view.day)] = dc;
+    all[key] = dc;
     saveChecks(all);
     overlay.remove();
-    renderDay();
+    renderWorkout();
   };
 }
 
@@ -258,14 +232,13 @@ function renderStats() {
   const checks = loadChecks();
   const log = loadLog();
 
-  const daysPerWeek = Math.max(...Object.values(data).map(w => Object.keys(w).length));
+  const sessionsTarget = Object.values(data).reduce((sum, w) => sum + w.days.length, 0);
 
   let sessionsWeek = 0, sessionsMonth = 0;
   Object.entries(checks).forEach(([key, dc]) => {
     const anyDone = Object.values(dc).some(Boolean);
     if (!anyDone) return;
-    const parts = key.split('__');
-    const dateStr = parts[2];
+    const [, dateStr] = key.split('__');
     const d = parseDate(dateStr);
     if (d >= weekStart && d <= weekEnd) sessionsWeek++;
     if (dateStr.startsWith(monthPrefix)) sessionsMonth++;
@@ -282,7 +255,7 @@ function renderStats() {
   app.innerHTML = `
     <div class="section-label">Cette semaine</div>
     <div class="stat-row">
-      <div class="stat-tile"><div class="stat-value">${sessionsWeek}/${daysPerWeek}</div><div class="stat-label">séances</div></div>
+      <div class="stat-tile"><div class="stat-value">${sessionsWeek}/${sessionsTarget}</div><div class="stat-label">séances</div></div>
       <div class="stat-tile"><div class="stat-value">${Math.round(volumeWeek)}</div><div class="stat-label">kg soulevés (volume)</div></div>
     </div>
     <div class="section-label">Ce mois-ci</div>
@@ -358,19 +331,18 @@ function playAnimation(slug) {
 }
 
 backBtn.onclick = () => {
-  if (view.screen === 'day') view = { screen: 'days', week: view.week, day: null };
-  else if (view.screen === 'days' || view.screen === 'stats') view = { screen: 'weeks', week: null, day: null };
+  view = { screen: 'home', workoutId: null };
   saveNav();
   render();
 };
 
 resetBtn.onclick = () => {
-  if (view.screen !== 'day') return;
+  if (view.screen !== 'workout') return;
   if (!confirm('Réinitialiser les cases cochées de cette séance ?')) return;
   const all = loadChecks();
-  delete all[checkKey(view.week, view.day)];
+  delete all[checkKey(view.workoutId)];
   saveChecks(all);
-  renderDay();
+  renderWorkout();
 };
 
 fetch('data/workouts.json')
@@ -378,7 +350,7 @@ fetch('data/workouts.json')
   .then(json => {
     data = json;
     const saved = loadNav();
-    if (saved && saved.week && data[saved.week]) {
+    if (saved && saved.workoutId && data[saved.workoutId]) {
       view = saved;
     }
     render();

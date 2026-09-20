@@ -1,106 +1,11 @@
 {
-    "Semaine_A": {
-        "LUNDI": [
-            {
-                "ordre": "Échauffement",
-                "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
-                "series_x_reps": "3 à 5 minutes",
-                "slug": "jump-rope"
-            },
-            {
-                "ordre": "1A",
-                "exercice": "Développé couché incliné (Haltères)",
-                "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "incline-dumbbell-press"
-            },
-            {
-                "ordre": "1B",
-                "exercice": "Tirage poitrine ou Tractions",
-                "series_x_reps": "2 x 10 à 12 reps",
-                "slug": "lat-pulldown"
-            },
-            {
-                "ordre": "2",
-                "exercice": "Goblet Squat ou Hack Squat",
-                "series_x_reps": "1 x 6-8 reps + 1 x 10-12 reps",
-                "slug": "goblet-squat"
-            },
-            {
-                "ordre": "3",
-                "exercice": "Soulevé de terre roumain (Haltères)",
-                "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "dumbbell-romanian-deadlift"
-            },
-            {
-                "ordre": "4",
-                "exercice": "Élévations latérales",
-                "series_x_reps": "1 x 12-15 reps + 1 Drop Set",
-                "slug": "lateral-raise"
-            },
-            {
-                "ordre": "Cardio",
-                "exercice": "Corde à sauter",
-                "series_x_reps": "20 minutes",
-                "slug": "jump-rope"
-            }
+    "A": {
+        "label": "Workout A",
+        "days": [
+            "Lundi",
+            "Vendredi"
         ],
-        "MERCREDI": [
-            {
-                "ordre": "Échauffement",
-                "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
-                "series_x_reps": "3 à 5 minutes",
-                "slug": "jump-rope"
-            },
-            {
-                "ordre": "1A",
-                "exercice": "Tirage horizontal",
-                "series_x_reps": "2 x 10 à 12 reps",
-                "slug": "seated-row"
-            },
-            {
-                "ordre": "1B",
-                "exercice": "Développé couché à plat (Haltères)",
-                "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "dumbbell-bench-press"
-            },
-            {
-                "ordre": "2",
-                "exercice": "Step-ups (sur banc) ou Fentes",
-                "series_x_reps": "1 x 8 à 10 reps (par jambe)",
-                "slug": "step-up"
-            },
-            {
-                "ordre": "3",
-                "exercice": "Leg Curl Assis (Machine)",
-                "series_x_reps": "1 x 10 à 12 reps + 1 Drop Set",
-                "slug": "seated-leg-curl"
-            },
-            {
-                "ordre": "4A",
-                "exercice": "Curl Biceps",
-                "series_x_reps": "1 x 12 à 15 reps",
-                "slug": "bicep-curl"
-            },
-            {
-                "ordre": "4B",
-                "exercice": "Extension Triceps au-dessus de la tête",
-                "series_x_reps": "1 x 12 à 15 reps + 1 Drop Set",
-                "slug": "overhead-tricep-extension"
-            },
-            {
-                "ordre": "5",
-                "exercice": "Abdos (\"Deadbug\" ou Crunch)",
-                "series_x_reps": "1 x 12 à 15 reps (échec)",
-                "slug": "dead-bug"
-            },
-            {
-                "ordre": "Cardio",
-                "exercice": "Corde à sauter",
-                "series_x_reps": "20 minutes",
-                "slug": "jump-rope"
-            }
-        ],
-        "VENDREDI": [
+        "exercises": [
             {
                 "ordre": "Échauffement",
                 "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
@@ -145,108 +50,12 @@
             }
         ]
     },
-    "Semaine_B": {
-        "LUNDI": [
-            {
-                "ordre": "Échauffement",
-                "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
-                "series_x_reps": "3 à 5 minutes",
-                "slug": "jump-rope"
-            },
-            {
-                "ordre": "1A",
-                "exercice": "Tirage horizontal",
-                "series_x_reps": "2 x 10 à 12 reps",
-                "slug": "seated-row"
-            },
-            {
-                "ordre": "1B",
-                "exercice": "Développé couché à plat (Haltères)",
-                "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "dumbbell-bench-press"
-            },
-            {
-                "ordre": "2",
-                "exercice": "Step-ups (sur banc) ou Fentes",
-                "series_x_reps": "1 x 8 à 10 reps (par jambe)",
-                "slug": "step-up"
-            },
-            {
-                "ordre": "3",
-                "exercice": "Leg Curl Assis (Machine)",
-                "series_x_reps": "1 x 10 à 12 reps + 1 Drop Set",
-                "slug": "seated-leg-curl"
-            },
-            {
-                "ordre": "4A",
-                "exercice": "Curl Biceps",
-                "series_x_reps": "1 x 12 à 15 reps",
-                "slug": "bicep-curl"
-            },
-            {
-                "ordre": "4B",
-                "exercice": "Extension Triceps au-dessus de la tête",
-                "series_x_reps": "1 x 12 à 15 reps + 1 Drop Set",
-                "slug": "overhead-tricep-extension"
-            },
-            {
-                "ordre": "5",
-                "exercice": "Abdos (\"Deadbug\" ou Crunch)",
-                "series_x_reps": "1 x 12 à 15 reps (échec)",
-                "slug": "dead-bug"
-            },
-            {
-                "ordre": "Cardio",
-                "exercice": "Corde à sauter",
-                "series_x_reps": "20 minutes",
-                "slug": "jump-rope"
-            }
+    "B": {
+        "label": "Workout B",
+        "days": [
+            "Mercredi"
         ],
-        "MERCREDI": [
-            {
-                "ordre": "Échauffement",
-                "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
-                "series_x_reps": "3 à 5 minutes",
-                "slug": "jump-rope"
-            },
-            {
-                "ordre": "1A",
-                "exercice": "Développé couché incliné (Haltères)",
-                "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "incline-dumbbell-press"
-            },
-            {
-                "ordre": "1B",
-                "exercice": "Tirage poitrine ou Tractions",
-                "series_x_reps": "2 x 10 à 12 reps",
-                "slug": "lat-pulldown"
-            },
-            {
-                "ordre": "2",
-                "exercice": "Goblet Squat ou Hack Squat",
-                "series_x_reps": "1 x 6-8 reps + 1 x 10-12 reps",
-                "slug": "goblet-squat"
-            },
-            {
-                "ordre": "3",
-                "exercice": "Soulevé de terre roumain (Haltères)",
-                "series_x_reps": "2 x 8 à 10 reps",
-                "slug": "dumbbell-romanian-deadlift"
-            },
-            {
-                "ordre": "4",
-                "exercice": "Élévations latérales",
-                "series_x_reps": "1 x 12-15 reps + 1 Drop Set",
-                "slug": "lateral-raise"
-            },
-            {
-                "ordre": "Cardio",
-                "exercice": "Corde à sauter",
-                "series_x_reps": "20 minutes",
-                "slug": "jump-rope"
-            }
-        ],
-        "VENDREDI": [
+        "exercises": [
             {
                 "ordre": "Échauffement",
                 "exercice": "Corde à sauter (1 min effort / 30 sec repos)",
